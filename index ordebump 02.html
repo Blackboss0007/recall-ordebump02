@@ -1,0 +1,291 @@
+<!doctype html>
+<!-- AprovaIA RECALL — arquivo único, sem dependências. ATENÇÃO (dono do produto): uma página estática pública pode ser aberta por qualquer pessoa que tenha o link; não existe controle de acesso por comprador nem validação de pagamento. -->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AprovaIA RECALL — Sistema de Memorização e Revisão Inteligente</title>
+<meta name="description" content="Flashcards, revisões de 24h, 7 e 30 dias, caderno de erros, modo desafio e painel de evolução.">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236D28D9'/%3E%3Cpath d='M20 38l8-18 8 18M23 32h10' fill='none' stroke='%23FFFFFF' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;--bg:#fbfaff;--card:#ffffff;--gr:#f4f0ff;--gr2:#e7e1f6;--pu:#6d28d9;--gl:#8b5cf6;--li:#6d28d9;--mu:#5f5a75;--tx:#17132b;--ok:#15803d;--bad:#dc2626;--fld:#faf9ff;--sh:0 10px 34px rgba(76,29,149,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(60vw 45vw at 90% -10%,rgba(139,92,246,.13),transparent 60%),radial-gradient(40vw 35vw at -5% 105%,rgba(96,165,250,.10),transparent 60%)}
+button,input,select,textarea{font:inherit;color:inherit}
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+#nav{position:sticky;top:0;align-self:start;height:100vh;padding:18px 12px;border-right:1px solid var(--gr2);background:rgba(255,255,255,.88);backdrop-filter:blur(10px);overflow:auto}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;padding:4px 8px 16px}.lg{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:15px}.ia{color:var(--gl)}
+.pill{background:var(--pu);font-size:10px;letter-spacing:.14em;padding:3px 7px;border-radius:6px}
+#nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;color:var(--mu);text-decoration:none;font-weight:600;font-size:14px;transition:.15s}
+#nav a b{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:var(--gr);font-size:11px;color:var(--li)}
+#nav a:hover{background:var(--gr);color:var(--tx)}
+#nav a.on{background:linear-gradient(135deg,rgba(109,40,217,.14),rgba(168,85,247,.06));color:#4c1d95;box-shadow:inset 0 0 0 1px rgba(109,40,217,.35)}
+#nav a.on b{background:var(--pu);color:#fff}
+main{padding:26px clamp(14px,3vw,36px) 60px;min-width:0}
+h1{font-size:clamp(22px,4vw,32px);letter-spacing:-.02em;line-height:1.15}
+h2{font-size:18px;margin:22px 0 8px}
+h3{font-size:15px;margin-bottom:4px}
+.sub{color:var(--mu);margin:6px 0 16px;max-width:62ch}
+.head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn,.chip{border:1px solid var(--gr2);background:var(--gr);border-radius:999px;padding:8px 15px;cursor:pointer;font-weight:600;font-size:13px;transition:.15s;color:var(--tx)}
+.btn:hover,.chip:hover{border-color:var(--pu);transform:translateY(-1px);background:#fff}.btn.pr:hover{background:linear-gradient(135deg,#5b21b6,#6d28d9)}
+.btn.pr{background:linear-gradient(135deg,#6d28d9,#7c3aed);border-color:transparent;color:#fff;box-shadow:0 8px 20px rgba(109,40,217,.28)}
+.btn.dg:hover{border-color:var(--bad);color:var(--bad);background:#fff}
+.chip.on{background:var(--pu);border-color:var(--pu);color:#fff}
+.sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+:focus-visible{outline:2px solid var(--li);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--gr2);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:var(--sh)}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.days{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.day{background:var(--card);border:1px solid var(--gr2);border-radius:16px;padding:12px;box-shadow:var(--sh)}
+.day h4{font-size:12px;letter-spacing:.12em;color:var(--li);margin-bottom:6px}
+label.l,.l{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mu);margin:7px 0 3px;font-weight:700}
+.f{width:100%;background:var(--fld);border:1px solid var(--gr2);border-radius:10px;padding:7px 9px;font-size:13.5px;transition:.15s;resize:vertical}
+.f:focus{border-color:var(--pu);box-shadow:0 0 0 3px rgba(109,40,217,.15);outline:none;background:#fff}
+.tk{display:flex;gap:6px;align-items:center;margin-bottom:4px}.tk .f{padding:5px 8px}
+.ck{display:inline-flex;align-items:center;cursor:pointer;gap:8px}
+.ck input{position:absolute;opacity:0;width:0;height:0}
+.ck i{flex:none;width:18px;height:18px;border:1.5px solid var(--pu);border-radius:5px;display:grid;place-items:center;transition:.12s;background:#fff}
+.ck input:checked+i{background:var(--pu)}.ck input:checked+i:after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.ck input:focus-visible+i{outline:2px solid var(--li);outline-offset:2px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.tw{overflow-x:auto;border:1px solid var(--gr2);border-radius:16px;background:var(--card);box-shadow:var(--sh)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{background:var(--gr);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--li);padding:8px 6px;text-align:left;white-space:nowrap}
+td{padding:4px;border-top:1px solid var(--gr2);vertical-align:middle}
+td .f{min-width:90px}td.c{text-align:center;white-space:nowrap;font-size:12.5px;color:var(--mu)}
+.st{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11.5px;font-weight:700;background:var(--gr);color:var(--mu)}
+.st.late{background:rgba(220,38,38,.10);color:var(--bad)}.st.today{background:var(--pu);color:#fff}.st.done{background:rgba(21,128,61,.12);color:var(--ok)}
+.kpi{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}.kpi div{background:var(--gr);border:1px solid var(--gr2);border-radius:14px;padding:8px 14px;font-size:12px;color:var(--mu)}.kpi b{display:block;font-size:20px;color:var(--tx)}
+.note{background:rgba(109,40,217,.07);border-left:3px solid var(--pu);border-radius:10px;padding:10px 13px;color:#4c1d95;font-size:13.5px;margin:10px 0}
+.pc{position:relative}
+.pc .n{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:var(--pu);font-weight:800;font-size:12px;margin-right:8px}
+.pc pre{white-space:pre-wrap;word-wrap:break-word;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--fld);border:1px solid var(--gr2);border-left:3px solid var(--pu);border-radius:8px;padding:11px;margin:9px 0;color:var(--tx)}
+mark{background:rgba(109,40,217,.12);color:#5b21b6;border-radius:3px;padding:0 2px}
+.tip{color:var(--mu);font-size:12.5px}
+.sec{border-left:3px solid var(--pu);padding-left:12px;margin:18px 0 8px}
+.dn{font-weight:700;width:56px}
+.cal{min-width:700px;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .h{background:var(--gr);text-align:center;font-size:10.5px;letter-spacing:.1em;color:var(--li);padding:5px;border-radius:6px}
+.cal .cell{background:var(--card);border:1px solid var(--gr2);border-radius:10px;padding:3px}
+.cal .cell .f{padding:2px 5px;font-size:12px;border-radius:5px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);box-shadow:0 10px 30px rgba(76,29,149,.3);background:var(--pu);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:99}
+#toast.on{opacity:1;transform:translateX(-50%)}
+.fade{animation:fd .25s ease}@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.only-print{display:none}
+@media(max-width:860px){
+#app{grid-template-columns:1fr}
+#nav{position:sticky;z-index:20;height:auto;display:flex;gap:6px;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--gr2)}
+#nav .logo{display:none}#nav a{white-space:nowrap;flex:none;padding:7px 11px}
+main{padding-top:16px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{
+:root{color-scheme:light}
+body{background:#fff;color:#111;font-size:11px}body:before{display:none}
+#nav,.noprint,#toast,.btns,.sel{display:none!important}
+#app{display:block}main{padding:0}
+.card,.day,.tw,.cal .cell{background:#fff!important;border:1px solid #bbb!important;break-inside:avoid}
+.f{background:#fff!important;border:0!important;border-bottom:1px solid #999!important;border-radius:0!important;color:#111!important;resize:none}
+textarea.f{border:1px solid #ccc!important}
+th{background:#eee!important;color:#111!important}td{border-color:#ccc!important}.sub,.tip,.l,td.c{color:#444!important}
+h1,h2,h3,.day h4{color:#111!important}.pc pre{background:#f6f6f6!important;color:#111!important}mark{background:#e9e0ff!important;color:#4c1d95!important}
+.ck i{background:#fff!important;border-color:#333!important}.ck input:checked+i{background:#333!important}
+.note{background:#f3f0ff!important;color:#222!important}.kpi div{background:#f3f3f3!important;color:#333!important}.kpi b{color:#000!important}
+.only-print{display:block;font-size:9px;color:#666;margin-top:10px}
+.st{background:#eee!important;color:#111!important}
+}
+
+.hero{background:linear-gradient(135deg,#17132b,#2a1760 60%,#6d28d9);color:#fff;border-radius:24px;padding:clamp(22px,5vw,44px);box-shadow:var(--sh);margin-bottom:16px}
+.hero h1{color:#fff;font-size:clamp(26px,6vw,40px)}.hero p{color:#e5defc;max-width:56ch;margin:10px 0 18px}.hero .btn.pr{background:#fff;color:#4c1d95;box-shadow:none;font-weight:800;letter-spacing:.04em}
+.fcard{background:var(--card);border:1px solid var(--gr2);border-radius:20px;padding:20px;box-shadow:var(--sh);margin-bottom:12px}
+.fcard .q{font-size:clamp(17px,3.6vw,21px);font-weight:700;line-height:1.35;margin:6px 0 10px;white-space:pre-wrap}
+.fcard .a{background:var(--gr);border-left:3px solid var(--pu);border-radius:10px;padding:12px;margin:10px 0;white-space:pre-wrap}
+.tag{display:inline-block;background:var(--gr);color:var(--li);border-radius:99px;padding:2px 10px;font-size:11.5px;font-weight:700;margin-right:6px}
+.lv{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.lv .btn.on{background:var(--pu);color:#fff;border-color:var(--pu)}
+.bar{height:10px;background:var(--gr);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#6d28d9,#60a5fa);border-radius:99px;transition:width .4s}
+.brow{display:grid;grid-template-columns:minmax(90px,170px) 1fr 34px;gap:10px;align-items:center;margin:8px 0;font-size:13px}
+.err{color:var(--bad);font-size:13px;margin-top:6px;min-height:1px}
+.empty{text-align:center;padding:30px 16px;border:1.5px dashed var(--gr2);border-radius:20px;color:var(--mu);background:var(--card)}.empty b{display:block;color:var(--tx);font-size:16px;margin-bottom:4px}
+details{background:var(--card);border:1px solid var(--gr2);border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--sh)}summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--li);font-size:20px;line-height:1}details[open] summary:after{content:"−"}
+details p,details li{margin-top:8px;color:var(--tx)}details ul{padding-left:20px}details .ex{background:var(--gr);border-radius:10px;padding:9px 12px;margin-top:8px;font-size:13.5px}
+.steps{counter-reset:s;display:grid;gap:10px;list-style:none}.steps li{position:relative;padding:12px 14px 12px 52px;background:var(--card);border:1px solid var(--gr2);border-radius:14px}.steps li:before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:11px;width:28px;height:28px;border-radius:9px;background:var(--pu);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px}
+.log li{list-style:none;padding:8px 0;border-top:1px solid var(--gr2);font-size:13.5px;display:flex;gap:10px}.log li span{color:var(--mu);flex:none;font-size:12px;min-width:84px}
+.sc{font-size:42px;font-weight:800;color:var(--li);line-height:1}
+.nvbtm{padding:12px 6px 0;border-top:1px solid var(--gr2);margin-top:10px}
+@media(max-width:860px){.nvbtm{border:0;margin:0;padding:0;flex:none}.nvbtm .chip{width:auto!important;white-space:nowrap}.brow{grid-template-columns:100px 1fr 28px}}
+[data-theme=dark]{color-scheme:dark;--bg:#05030b;--card:#111018;--gr:#1b1a26;--gr2:#2a2838;--pu:#8b5cf6;--gl:#a855f7;--li:#c4b5fd;--mu:#b5b5c3;--tx:#f5f3ff;--ok:#22c55e;--bad:#f87171;--fld:#0b0914;--sh:0 10px 34px rgba(0,0,0,.45)}
+[data-theme=dark] body:before{background:radial-gradient(60vw 45vw at 90% -10%,rgba(168,85,247,.25),transparent 60%),radial-gradient(40vw 35vw at -5% 105%,rgba(139,92,246,.14),transparent 60%)}
+[data-theme=dark] #nav{background:rgba(5,3,11,.85)}[data-theme=dark] #nav a.on{color:#fff}[data-theme=dark] .note{color:var(--li);background:rgba(139,92,246,.12)}[data-theme=dark] mark{color:var(--li)}
+[data-theme=dark] .btn:hover,[data-theme=dark] .chip:hover,[data-theme=dark] .btn.dg:hover{background:var(--gr)}[data-theme=dark] .f:focus{background:var(--fld)}[data-theme=dark] .ck i{background:var(--fld)}
+</style>
+</head>
+<body>
+<div id="app"><nav id="nav" aria-label="Módulos"></nav><main><div id="view" class="fade" tabindex="-1"></div></main></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="aprovaia-recall-v1",CATS=["Falta de atenção","Falta de conhecimento","Interpretação incorreta","Confusão entre conceitos","Falha de memorização"];
+const DEF={cards:[],rev:[],err:[],ses:[],log:[],cfg:{int:[1,7,30]},theme:"light",welcomed:false};
+let memOnly=false,tm;
+function norm(o){o=o&&typeof o==="object"&&!Array.isArray(o)?o:{};const r=JSON.parse(JSON.stringify(DEF));for(const k of["cards","rev","err","ses","log"])if(Array.isArray(o[k]))r[k]=o[k].filter(x=>x&&typeof x==="object");
+if(o.cfg&&Array.isArray(o.cfg.int)&&o.cfg.int.length===3&&o.cfg.int.every(n=>Number.isInteger(n)&&n>=1&&n<=365))r.cfg.int=o.cfg.int;r.theme=o.theme==="dark"?"dark":"light";r.welcomed=!!o.welcomed;return r}
+let S;try{S=norm(JSON.parse(localStorage.getItem(KEY)||"null"))}catch(e){memOnly=true;S=norm(null)}
+function flush(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){if(!memOnly){memOnly=true;toast("Sem armazenamento no navegador: os dados não serão salvos")}}}
+const save=()=>{clearTimeout(tm);tm=setTimeout(flush,120)};
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),2000)}
+const ymd=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const today=()=>ymd(new Date());
+const addDays=(s,n)=>{const[a,b,c]=s.split("-").map(Number),d=new Date(Date.UTC(a,b-1,c+n));return d.getUTCFullYear()+"-"+String(d.getUTCMonth()+1).padStart(2,"0")+"-"+String(d.getUTCDate()).padStart(2,"0")};
+const br=s=>s?s.split("-").reverse().join("/"):"";
+const validD=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||"")&&!isNaN(Date.parse(s));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const val=id=>{const e=document.getElementById(id);return e?e.value.trim():""};
+const log=t=>{S.log.unshift({ts:Date.now(),t});S.log=S.log.slice(0,200)};
+const fts=ts=>{const d=new Date(ts);return String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
+const discs=()=>[...new Set([...S.cards,...S.rev,...S.err].map(x=>x.disc).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+const opts=(arr,sel,all)=>(all?`<option value="">${all}</option>`:"")+arr.map(x=>`<option ${x===sel?"selected":""}>${esc(x)}</option>`).join("");
+const empty=(t,d)=>`<div class="empty"><b>${t}</b>${d}</div>`;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const UI={ed:null,rev:new Set(),fd:"",study:null,rf:"pend",ee:null,eq:"",ec:"",edi:"",ch:null,chd:"",cn:""};
+const M={};
+/* ===== INÍCIO ===== */
+M.inicio={n:"Início",i:"★",r(){return `<div class="hero"><span class="pill">NOVO · ORDER BUMP DO APROVAIA</span><h1 style="margin-top:12px">Bem-vindo ao AprovaIA RECALL</h1><p>Seu espaço para transformar estudo em prática, revisar com estratégia e acompanhar sua evolução.</p><button class="btn pr" data-act="start">COMEÇAR AGORA</button></div>
+<div class="note"><b>Seus dados ficam neste aparelho e neste navegador.</b> Não há cadastro, login nem servidor. Se você limpar os dados do navegador, usar aba anônima ou trocar de aparelho, eles podem ser perdidos. Exporte um backup com frequência.</div>
+<h2>Memorizar exige prática. Revisar exige estratégia.</h2><p class="sub">Organize seus flashcards, treine sua memória, acompanhe suas revisões e identifique os conteúdos que precisam de mais atenção.</p>
+<ol class="steps"><li><b>Crie flashcards</b> com perguntas boas sobre o que você estuda.</li><li><b>Registre o que estudou</b> em Revisão: as datas de 24h, 7 e 30 dias são calculadas.</li><li><b>Treine no Desafio</b>: tente responder antes de revelar.</li><li><b>Registre seus erros</b> e veja os padrões no Painel.</li></ol>
+<h2>O que tem dentro</h2><div class="grid g3">${[["Flashcards","Cartões por disciplina e assunto, com modo de estudo em sequência."],["Revisão inteligente","Repetição espaçada com intervalos que você configura."],["Caderno de erros","Cinco categorias de erro, busca e filtros."],["Modo desafio","Responda antes de revelar e veja o resultado da sessão."],["Painel de evolução","Números reais calculados com os seus dados."],["Guia de memorização","Técnicas com exemplos para concursos, ENEM e OAB."]].map(c=>`<div class="card" style="margin:0"><h3>${c[0]}</h3><p class="tip" style="color:var(--mu)">${c[1]}</p></div>`).join("")}</div>
+<div class="note">O RECALL é uma ferramenta de organização e prática. Não promete aprovação nem memorização garantida: os resultados dependem do seu esforço e do seu contexto. Ele complementa o AprovaIA e não substitui o plano de estudos nem os simulados de lá.</div>
+<h2>Seus dados</h2><div class="card"><div class="btns"><button class="btn pr" data-act="export">Exportar backup</button><label class="btn" style="cursor:pointer">Importar backup<input type="file" id="imp" accept="application/json,.json" hidden></label><button class="btn dg" data-act="wipe">Apagar todos os dados</button></div></div>`}};
+/* ===== FLASHCARDS ===== */
+function cardForm(){const c=S.cards.find(x=>x.id===UI.ed)||{q:"",a:"",disc:"",ass:""};
+return `<div class="card"><h3>${UI.ed?"Editar cartão":"Novo cartão"}</h3><span class="l">Pergunta</span><textarea class="f" id="fq" rows="2" maxlength="600" aria-label="Pergunta">${esc(c.q)}</textarea><span class="l">Resposta</span><textarea class="f" id="fa" rows="3" maxlength="1200" aria-label="Resposta">${esc(c.a)}</textarea>
+<div class="grid g2"><div><span class="l">Disciplina</span><input class="f" id="fd" list="dl" maxlength="60" value="${esc(c.disc)}" aria-label="Disciplina"><datalist id="dl">${discs().map(d=>`<option value="${esc(d)}">`).join("")}</datalist></div><div><span class="l">Assunto</span><input class="f" id="fs" maxlength="80" value="${esc(c.ass)}" aria-label="Assunto"></div></div>
+<p class="err" id="fe" role="alert"></p><div class="btns" style="margin-top:8px"><button class="btn pr" data-act="savecard">${UI.ed?"Salvar alterações":"Adicionar cartão"}</button>${UI.ed?`<button class="btn" data-act="canccard">Cancelar</button>`:""}</div></div>`}
+function clist(){const l=S.cards.filter(c=>!UI.fd||c.disc===UI.fd);if(!S.cards.length)return empty("Nenhum flashcard ainda","Crie o primeiro cartão acima. Uma pergunta, uma resposta curta.");if(!l.length)return empty("Nada nesta disciplina","Escolha outra disciplina ou crie um cartão novo.");
+const LV={facil:"Fácil",medio:"Médio",dificil:"Difícil"};return l.map(c=>`<div class="fcard" data-card="${c.id}"><div><span class="tag">${esc(c.disc)}</span>${c.ass?`<span class="tag">${esc(c.ass)}</span>`:""}${c.lvl?`<span class="tag">${LV[c.lvl]}</span>`:""}</div><div class="q">${esc(c.q)}</div>${UI.rev.has(c.id)?`<div class="a">${esc(c.a)}</div>`:""}
+<div class="btns"><button class="btn pr" data-act="flip" data-id="${c.id}">${UI.rev.has(c.id)?"Ocultar resposta":"Revelar resposta"}</button><button class="btn" data-act="editcard" data-id="${c.id}">Editar</button><button class="btn dg" data-act="delcard" data-id="${c.id}">Excluir</button></div>
+<div class="lv"><span class="l" style="margin:8px 6px 0 0">Dificuldade</span>${Object.keys(LV).map(k=>`<button class="btn ${c.lvl===k?"on":""}" data-act="lvl" data-id="${c.id}" data-v="${k}">${LV[k]}</button>`).join("")}</div></div>`).join("")}
+function studyView(){const s=UI.study,c=S.cards.find(x=>x.id===s.ids[s.i]);if(!c){UI.study=null;return M.cards.r()}const LV={facil:"Fácil",medio:"Médio",dificil:"Difícil"};
+return `<div class="head"><div><h1>Modo de estudo</h1><p class="sub">Cartão ${s.i+1} de ${s.ids.length}${UI.fd?" · "+esc(UI.fd):""}</p></div><div class="btns"><button class="btn" data-act="endstudy">Sair</button></div></div><div class="bar" style="margin-bottom:14px"><i style="width:${Math.round((s.i+1)/s.ids.length*100)}%"></i></div>
+<div class="fcard"><div><span class="tag">${esc(c.disc)}</span>${c.ass?`<span class="tag">${esc(c.ass)}</span>`:""}</div><div class="q">${esc(c.q)}</div>${s.show?`<div class="a">${esc(c.a)}</div><div class="lv"><span class="l" style="margin:8px 6px 0 0">Como foi?</span>${Object.keys(LV).map(k=>`<button class="btn ${c.lvl===k?"on":""}" data-act="lvl" data-id="${c.id}" data-v="${k}" data-st="1">${LV[k]}</button>`).join("")}</div>`:`<button class="btn pr" data-act="sshow">Revelar resposta</button>`}
+<div class="btns" style="margin-top:14px"><button class="btn" data-act="sprev" ${s.i===0?"disabled":""}>Anterior</button><button class="btn pr" data-act="snext">${s.i===s.ids.length-1?"Concluir":"Próximo"}</button></div></div>`}
+M.cards={n:"Flashcards",i:"01",r(){if(UI.study)return studyView();
+return `<div class="head"><div><h1>Flashcards</h1><p class="sub">Uma ideia por cartão. Tente lembrar a resposta antes de revelar.</p></div><div class="btns"><button class="btn pr" data-act="study" ${S.cards.length?"":"disabled"}>Estudar em sequência</button></div></div>${cardForm()}
+<div class="head" style="margin-top:6px"><h2 style="margin:0">Seus cartões (${S.cards.length})</h2><select class="f" id="fdisc" style="max-width:240px" aria-label="Filtrar por disciplina">${opts(discs().filter(d=>S.cards.some(c=>c.disc===d)),UI.fd,"Todas as disciplinas")}</select></div><div id="clist">${clist()}</div>`}};
+/* ===== REVISÃO ===== */
+function rstat(r){const it=S.cfg.int,t=today(),d=r.done||[];const k=[0,1,2].find(i=>!d[i]);if(k===undefined)return{k:-1,st:"done",due:""};const due=addDays(r.d,it[k]);return{k,due,st:due<t?"late":due===t?"today":"wait"}}
+function rlist(){const t=today(),all=S.rev.map(r=>({r,s:rstat(r)})),f=UI.rf;const l=all.filter(x=>f==="todas"||(f==="pend"&&(x.s.st==="today"||x.s.st==="wait"))||(f==="atr"&&x.s.st==="late")||(f==="conc"&&x.s.st==="done")).sort((a,b)=>(a.s.due||"9")<(b.s.due||"9")?-1:1);
+if(!S.rev.length)return empty("Nenhum conteúdo registrado","Registre o que você estudou hoje e as datas das revisões aparecem aqui.");if(!l.length)return empty("Nada nesta lista","Mude o filtro acima.");
+const LB=["24h","7 dias","30 dias"];return l.map(({r,s})=>`<div class="fcard"><div><span class="tag">${esc(r.disc)}</span><span class="st ${s.st==="late"?"late":s.st==="today"?"today":s.st==="done"?"done":""}">${s.st==="late"?"Atrasada":s.st==="today"?"Vence hoje":s.st==="done"?"Concluída":"No prazo"}</span></div><div class="q">${esc(r.t)}</div><p class="tip" style="color:var(--mu)">Estudado em ${br(r.d)}</p>
+<div class="lv">${LB.map((n,i)=>{const dn=(r.done||[])[i];return `<span class="tag" style="${dn?"background:rgba(21,128,61,.14);color:var(--ok)":""}">${n}: ${dn?"feita em "+br(dn):br(addDays(r.d,S.cfg.int[i]))}</span>`}).join("")}</div>
+<div class="btns" style="margin-top:10px">${s.k>=0?`<button class="btn pr" data-act="revdone" data-id="${r.id}">Marcar revisão de ${LB[s.k]} como feita</button>`:""}<button class="btn dg" data-act="delrev" data-id="${r.id}">Excluir</button></div></div>`).join("")}
+M.revisao={n:"Revisão",i:"02",r(){const it=S.cfg.int,tabs=[["pend","Pendentes"],["atr","Atrasadas"],["conc","Concluídas"],["todas","Todas"]];
+return `<div class="head"><div><h1>Revisão inteligente</h1><p class="sub">Registre quando estudou um conteúdo. Cada revisão é calculada a partir dessa data.</p></div></div>
+<div class="card"><h3>Registrar estudo</h3><span class="l">Conteúdo estudado</span><input class="f" id="rt" maxlength="140" placeholder="Ex.: Princípios da Administração Pública" aria-label="Conteúdo estudado"><div class="grid g2"><div><span class="l">Disciplina</span><input class="f" id="rd" list="dl2" maxlength="60" aria-label="Disciplina"><datalist id="dl2">${discs().map(d=>`<option value="${esc(d)}">`).join("")}</datalist></div><div><span class="l">Data do estudo</span><input class="f" id="rdt" type="date" value="${today()}" aria-label="Data do estudo"></div></div><p class="err" id="re" role="alert"></p><button class="btn pr" data-act="addrev" style="margin-top:8px">Registrar e calcular revisões</button></div>
+<div class="card"><h3>Intervalos (em dias)</h3><div class="grid g3"><div><span class="l">1ª revisão</span><input class="f" id="i0" type="number" min="1" max="365" value="${it[0]}" aria-label="Dias da 1ª revisão"></div><div><span class="l">2ª revisão</span><input class="f" id="i1" type="number" min="1" max="365" value="${it[1]}" aria-label="Dias da 2ª revisão"></div><div><span class="l">3ª revisão</span><input class="f" id="i2" type="number" min="1" max="365" value="${it[2]}" aria-label="Dias da 3ª revisão"></div></div><p class="err" id="ie" role="alert"></p><div class="btns" style="margin-top:8px"><button class="btn" data-act="saveint">Salvar intervalos</button><button class="btn" data-act="defint">Restaurar 1 · 7 · 30</button></div>
+<div class="note" style="margin-bottom:0">Os intervalos são uma estratégia de organização, não uma garantia de memorização ou de aprovação. Ajuste ao seu ritmo.</div></div>
+<div class="sel">${tabs.map(t=>`<button class="chip ${UI.rf===t[0]?"on":""}" data-act="rf" data-v="${t[0]}">${t[1]}</button>`).join("")}</div><div id="rlist">${rlist()}</div>`}};
+/* ===== ERROS ===== */
+function elist(){const q=UI.eq.toLowerCase(),l=S.err.filter(e=>(!UI.ec||e.cat===UI.ec)&&(!UI.edi||e.disc===UI.edi)&&(!q||(e.q+" "+e.ass+" "+e.mot+" "+e.ans+" "+e.learn).toLowerCase().includes(q)));
+if(!S.err.length)return empty("Nenhum erro registrado","Cada erro é uma pista do que estudar. Registre o primeiro acima.");if(!l.length)return empty("Nenhum registro encontrado","Ajuste a busca ou os filtros.");
+return l.map(e=>`<div class="fcard"><div><span class="tag">${esc(e.disc)}</span>${e.ass?`<span class="tag">${esc(e.ass)}</span>`:""}<span class="tag" style="background:rgba(220,38,38,.1);color:var(--bad)">${esc(e.cat)}</span></div><div class="q">${esc(e.q)}</div>${e.mot?`<p><b>Motivo:</b> ${esc(e.mot)}</p>`:""}<div class="a"><b>Resposta correta:</b> ${esc(e.ans)}</div>${e.learn?`<p><b>Preciso aprender:</b> ${esc(e.learn)}</p>`:""}<p class="tip" style="color:var(--mu)">Registrado em ${br(e.date)}</p><div class="btns" style="margin-top:8px"><button class="btn" data-act="editerr" data-id="${e.id}">Editar</button><button class="btn dg" data-act="delerr" data-id="${e.id}">Excluir</button></div></div>`).join("")}
+M.erros={n:"Caderno de Erros",i:"03",r(){const e=S.err.find(x=>x.id===UI.ee)||{q:"",disc:"",ass:"",cat:"",mot:"",ans:"",learn:"",date:today()};
+return `<div class="head"><div><h1>Caderno de erros</h1><p class="sub">Registre o erro, a resposta correta e o que precisa aprender. Depois revise por categoria.</p></div></div>
+<div class="card"><h3>${UI.ee?"Editar registro":"Novo registro"}</h3><span class="l">Questão ou conteúdo em que errou</span><textarea class="f" id="eq" rows="2" maxlength="800" aria-label="Questão ou conteúdo">${esc(e.q)}</textarea><div class="grid g3"><div><span class="l">Disciplina</span><input class="f" id="ed" list="dl3" maxlength="60" value="${esc(e.disc)}" aria-label="Disciplina"><datalist id="dl3">${discs().map(d=>`<option value="${esc(d)}">`).join("")}</datalist></div><div><span class="l">Assunto</span><input class="f" id="es" maxlength="80" value="${esc(e.ass)}" aria-label="Assunto"></div><div><span class="l">Data do registro</span><input class="f" id="edt" type="date" value="${esc(e.date)}" aria-label="Data do registro"></div></div>
+<span class="l">Categoria do erro</span><select class="f" id="ec" aria-label="Categoria do erro"><option value="">Selecione…</option>${CATS.map(c=>`<option ${c===e.cat?"selected":""}>${c}</option>`).join("")}</select><span class="l">Motivo do erro (com suas palavras)</span><input class="f" id="em" maxlength="300" value="${esc(e.mot)}" aria-label="Motivo do erro"><span class="l">Resposta correta</span><textarea class="f" id="ea" rows="2" maxlength="800" aria-label="Resposta correta">${esc(e.ans)}</textarea><span class="l">O que preciso aprender</span><textarea class="f" id="el" rows="2" maxlength="500" aria-label="O que preciso aprender">${esc(e.learn)}</textarea>
+<p class="err" id="ee" role="alert"></p><div class="btns" style="margin-top:8px"><button class="btn pr" data-act="saveerr">${UI.ee?"Salvar alterações":"Registrar erro"}</button>${UI.ee?`<button class="btn" data-act="cancerr">Cancelar</button>`:""}</div></div>
+<div class="grid g3" style="margin-bottom:12px"><input class="f" id="esq" placeholder="Pesquisar…" value="${esc(UI.eq)}" aria-label="Pesquisar registros"><select class="f" id="efc" aria-label="Filtrar por categoria">${opts(CATS,UI.ec,"Todas as categorias")}</select><select class="f" id="efd" aria-label="Filtrar por disciplina">${opts(discs().filter(d=>S.err.some(x=>x.disc===d)),UI.edi,"Todas as disciplinas")}</select></div><div id="elist">${elist()}</div>`}};
+/* ===== DESAFIO ===== */
+M.desafio={n:"Modo Desafio",i:"04",r(){const c=UI.ch;
+if(!c){const ds=discs().filter(d=>S.cards.some(x=>x.disc===d));return `<div class="head"><div><h1>Modo desafio</h1><p class="sub">Treine a memória: escreva sua resposta, depois revele, confira e diga se acertou.</p></div></div>
+${S.cards.length?`<div class="card"><span class="l">Disciplina</span><select class="f" id="chd" aria-label="Disciplina do desafio"><option value="">Todas (intercalar disciplinas)</option>${ds.map(d=>`<option ${d===UI.chd?"selected":""}>${esc(d)}</option>`).join("")}</select><p class="err" id="che" role="alert"></p><button class="btn pr" data-act="chstart" style="margin-top:10px">Iniciar desafio</button></div><div class="note">A resposta só aparece depois que você escreve uma tentativa ou toca em “Não sei”. Os cartões vêm em ordem aleatória.</div>`:empty("Crie flashcards para jogar","O desafio usa os cartões da aba Flashcards.")}`}
+if(c.done){const pc=c.ids.length?Math.round(c.hits/c.ids.length*100):0;return `<div class="head"><div><h1>Resultado da sessão</h1></div></div><div class="card"><div class="sc">${pc}%</div><p class="sub" style="margin:6px 0 0">${c.hits} acerto(s) e ${c.miss.length} erro(s) em ${c.ids.length} cartão(ões).</p><div class="bar" style="margin-top:12px"><i style="width:${pc}%"></i></div></div>
+${c.miss.length?`<div class="card"><h3>Para revisar</h3>${c.miss.map(id=>{const k=S.cards.find(x=>x.id===id);return k?`<p style="margin-top:8px"><b>${esc(k.q)}</b><br><span style="color:var(--mu)">${esc(k.a)}</span></p>`:""}).join("")}<button class="btn pr" data-act="misserr" style="margin-top:12px" ${c.sent?"disabled":""}>${c.sent?"Enviados ao caderno":"Enviar erros ao Caderno de Erros"}</button></div>`:`<div class="note">Sessão sem erros. Continue revisando nas datas certas.</div>`}<div class="btns"><button class="btn pr" data-act="chstart">Jogar de novo</button><button class="btn" data-act="chend">Voltar</button></div>`}
+const k=S.cards.find(x=>x.id===c.ids[c.i]);if(!k){UI.ch=null;return M.desafio.r()}
+return `<div class="head"><div><h1>Desafio</h1><p class="sub">Cartão ${c.i+1} de ${c.ids.length} · ${c.hits} acerto(s)</p></div><div class="btns"><button class="btn" data-act="chend">Encerrar</button></div></div><div class="bar" style="margin-bottom:14px"><i style="width:${Math.round(c.i/c.ids.length*100)}%"></i></div>
+<div class="fcard"><div><span class="tag">${esc(k.disc)}</span>${k.ass?`<span class="tag">${esc(k.ass)}</span>`:""}</div><div class="q">${esc(k.q)}</div>${c.show?`<span class="l">Sua tentativa</span><div class="a" style="border-left-color:var(--mu)">${esc(c.att)||"<i>(sem resposta)</i>"}</div><span class="l">Resposta do cartão</span><div class="a">${esc(k.a)}</div><p class="sub" style="margin:6px 0">Você acertou?</p><div class="btns"><button class="btn pr" data-act="chans" data-v="1">Acertei</button><button class="btn dg" data-act="chans" data-v="0">Errei</button></div>`:`<span class="l">Sua resposta (tente lembrar antes de revelar)</span><textarea class="f" id="att" rows="3" aria-label="Sua tentativa de resposta"></textarea><div class="btns" style="margin-top:10px"><button class="btn pr" data-act="chrev" id="chrev" disabled>Revelar resposta</button><button class="btn" data-act="chrev" data-nk="1">Não sei</button></div>`}</div>`}};
+/* ===== PAINEL ===== */
+M.painel={n:"Painel",i:"05",r(){const st=S.rev.map(rstat),rf=S.rev.reduce((a,r)=>a+(r.done||[]).filter(Boolean).length,0),pend=st.filter(s=>s.st==="today"||s.st==="wait").length,late=st.filter(s=>s.st==="late").length,hoje=st.filter(s=>s.st==="today").length,tot=S.ses.reduce((a,s)=>a+s.total,0),hit=S.ses.reduce((a,s)=>a+s.hits,0);
+const byc=CATS.map(c=>[c,S.err.filter(e=>e.cat===c).length]),mx=Math.max(1,...byc.map(x=>x[1]));
+const lv={facil:0,medio:0,dificil:0};S.cards.forEach(c=>{if(c.lvl)lv[c.lvl]++});
+return `<div class="head"><div><h1>Painel de evolução</h1><p class="sub">Todos os números vêm dos dados que você cadastrou neste aparelho.</p></div><div class="btns"><button class="btn pr" data-act="print">Imprimir / Salvar PDF</button></div></div>
+<div class="kpi"><div>Flashcards<b>${S.cards.length}</b></div><div>Revisões realizadas<b>${rf}</b></div><div>Pendentes (no prazo)<b>${pend}</b></div><div>Atrasadas<b>${late}</b></div><div>Vencem hoje<b>${hoje}</b></div><div>Erros registrados<b>${S.err.length}</b></div><div>Acertos no desafio<b>${tot?Math.round(hit/tot*100)+"%":"–"}</b></div><div>Sessões de desafio<b>${S.ses.length}</b></div></div>
+<div class="grid g2"><div class="card"><h3>Erros por categoria</h3>${S.err.length?byc.map(x=>`<div class="brow"><span>${x[0]}</span><div class="bar"><i style="width:${Math.round(x[1]/mx*100)}%"></i></div><b>${x[1]}</b></div>`).join(""):empty("Sem erros registrados","O gráfico aparece quando você usar o caderno.")}</div>
+<div class="card"><h3>Dificuldade dos cartões</h3>${S.cards.length?[["Fácil",lv.facil],["Médio",lv.medio],["Difícil",lv.dificil],["Sem marca",S.cards.length-lv.facil-lv.medio-lv.dificil]].map(x=>`<div class="brow"><span>${x[0]}</span><div class="bar"><i style="width:${Math.round(x[1]/S.cards.length*100)}%"></i></div><b>${x[1]}</b></div>`).join(""):empty("Sem flashcards","Crie cartões para ver a distribuição.")}</div></div>
+<div class="card"><h3>Últimas sessões de desafio</h3>${S.ses.length?`<div class="tw"><table><tr><th>Data</th><th>Disciplina</th><th>Cartões</th><th>Acertos</th><th>Taxa</th></tr>${S.ses.slice(0,8).map(s=>`<tr><td>${fts(s.ts)}</td><td>${esc(s.disc||"Todas")}</td><td>${s.total}</td><td>${s.hits}</td><td>${Math.round(s.hits/s.total*100)}%</td></tr>`).join("")}</table></div>`:empty("Nenhuma sessão ainda","Faça um desafio para ver sua taxa de acertos.")}</div>
+<div class="card"><h3>Histórico de atividade</h3>${S.log.length?`<ul class="log">${S.log.slice(0,15).map(l=>`<li><span>${fts(l.ts)}</span>${esc(l.t)}</li>`).join("")}</ul>`:empty("Sem atividade","Suas ações aparecem aqui.")}</div>`}};
+/* ===== GUIA ===== */
+const G=[["Recuperação ativa (Active Recall)","Consiste em tentar lembrar a resposta antes de olhar o material. Estudos de psicologia da aprendizagem indicam que se testar tende a fixar melhor do que reler, mas isso é uma estratégia, não uma garantia.","<div class='ex'><b>Concursos:</b> antes de abrir o resumo, escreva os cinco princípios do art. 37 da Constituição.<br><b>ENEM:</b> explique com suas palavras como ocorre a fotossíntese e só depois confira o esquema.<br><b>OAB:</b> diga de memória os requisitos de validade do negócio jurídico (art. 104 do Código Civil) e depois confira o texto.</div>"],
+["Repetição espaçada (Spaced Repetition)","Em vez de revisar tudo de uma vez, você revisa em intervalos crescentes. No RECALL o padrão é 24 horas, 7 dias e 30 dias, e você pode mudar. Os intervalos organizam sua rotina; eles não garantem memorização.","<div class='ex'>Estudou direitos fundamentais na terça? Registre em Revisão: a primeira revisão vence na quarta, a segunda na terça seguinte e a terceira cerca de um mês depois.</div>"],
+["Intercalação de assuntos","Misturar assuntos na mesma sessão, em vez de estudar um bloco longo de um tema só, força você a escolher a regra certa a cada questão, como na prova.","<div class='ex'><b>Concursos:</b> alterne português, lógica e direito constitucional.<br><b>ENEM:</b> alterne química e história.<br><b>OAB:</b> alterne penal e civil.<br>No Modo Desafio, escolha “Todas” para intercalar.</div>"],
+["Como transformar uma matéria em flashcards","Leia uma parte pequena, identifique as ideias que você precisa lembrar e crie um cartão por ideia. Não copie parágrafos: transforme em pergunta e resposta curta.","<div class='ex'><b>Texto:</b> o habeas corpus protege a liberdade de locomoção.<br><b>Pergunta:</b> Qual direito o habeas corpus protege?<br><b>Resposta:</b> A liberdade de locomoção (art. 5º, LXVIII, CF).</div>"],
+["Como criar perguntas de qualidade","Boa pergunta é específica, tem uma resposta curta e exige lembrar, não reconhecer. Evite sim ou não e perguntas que misturam vários conceitos.","<div class='ex'><b>Fraca:</b> “Fale sobre princípios da administração”.<br><b>Boa:</b> “Quais são os cinco princípios expressos no caput do art. 37 da CF?”.<br><b>Boa:</b> “Qual a diferença entre ato vinculado e ato discricionário?”.</div><ul><li>Use “por que”, “como” e “qual a diferença”.</li><li>Uma resposta com até 25 palavras funciona melhor.</li></ul>"],
+["Como utilizar o caderno de erros","Registre o erro no mesmo dia, escolha a categoria, escreva a resposta correta e o que você precisa aprender. Depois revise por categoria: se a maioria é falta de atenção, o remédio é outro que o de falta de conhecimento.","<div class='ex'><b>ENEM:</b> errou a leitura de um gráfico → categoria “Interpretação incorreta”, ação: sublinhar eixos e unidades antes de responder.<br><b>OAB:</b> trocou dois prazos parecidos → “Confusão entre conceitos”, ação: criar cartão comparativo.</div>"],
+["Como revisar conteúdos difíceis","Divida o conteúdo em partes menores, explique em voz alta como se ensinasse alguém, use exemplos e marque os cartões como Difícil para dar mais atenção a eles. Revisite-os mais cedo e com mais frequência.","<div class='ex'>Cartão longo demais? Quebre em três. Errou no desafio? Envie ao Caderno de Erros e crie um cartão novo sobre a causa do erro.</div>"],
+["Como evitar revisões passivas","Reler, grifar e copiar dão sensação de domínio, mas treinam pouco a lembrança. Troque por perguntas, testes e resumos feitos de memória.","<ul><li>Cubra o material e escreva o que lembra.</li><li>Faça o Desafio em vez de apenas folhear os cartões.</li><li>Corrija com outra cor o que faltou.</li><li>Se a revisão foi fácil demais, aumente a dificuldade.</li></ul>"]];
+M.guia={n:"Guia",i:"06",r(){return `<div class="head"><div><h1>Guia de memorização</h1><p class="sub">Técnicas práticas para estudar com mais estratégia, com exemplos para concursos, ENEM e OAB.</p></div></div>${G.map((g,i)=>`<details ${i===0?"open":""}><summary>${g[0]}</summary><p>${g[1]}</p>${g[2]}</details>`).join("")}<div class="note">Estas orientações são estratégias de estudo, não garantia de resultado. Confira sempre o conteúdo do seu edital ou matriz de referência.</div>`}};
+/* ===== NAVEGAÇÃO ===== */
+const ORDER=["inicio","cards","revisao","erros","desafio","painel","guia"];let cur="inicio";
+function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme);const m=document.querySelector('meta[name=theme-color]');if(m)m.content=S.theme==="dark"?"#05030b":"#ffffff"}
+function nav(){$("#nav").innerHTML=`<div class="logo"><span class="lg">R</span><span>Aprova<span class="ia">IA</span></span> <span class="pill">RECALL</span></div>`+ORDER.map(k=>`<a href="#${k}" data-m="${k}" class="${k===cur?"on":""}"><b>${M[k].i}</b>${M[k].n}</a>`).join("")+`<div class="nvbtm"><button class="chip" data-act="theme" style="width:100%">${S.theme==="dark"?"Tema claro":"Tema escuro"}</button></div>`}
+function render(){const k=ORDER.includes(location.hash.slice(1))?location.hash.slice(1):"inicio";if(k!==cur){UI.study=null}cur=k;applyTheme();nav();const v=$("#view");v.innerHTML=M[k].r()+`<p class="only-print">AprovaIA RECALL · uso pessoal</p>`;v.classList.remove("fade");void v.offsetWidth;v.classList.add("fade");document.title=M[k].n+" · AprovaIA RECALL"}
+function rr(){const y=window.scrollY;render();window.scrollTo(0,y)}
+window.addEventListener("hashchange",()=>{render();window.scrollTo(0,0)});
+const need=(id,m,t)=>{const e=$("#"+id);if(e)e.textContent=m;toast(m);const f=document.getElementById(t||"");if(f)f.focus();return false};
+function applyBackup(o){if(!o||typeof o!=="object"||o.__app!=="aprovaia-recall"||!o.data||typeof o.data!=="object")throw new Error("inválido");S=norm(o.data);flush()}
+function importFile(f){if(!f)return;if(f.size>5e6){toast("Arquivo grande demais");return}const r=new FileReader();r.onload=()=>{try{applyBackup(JSON.parse(r.result));toast("Backup importado");render()}catch(e){toast("Arquivo de backup inválido")}};r.onerror=()=>toast("Não foi possível ler o arquivo");r.readAsText(f)}
+document.addEventListener("input",e=>{const t=e.target;
+if(t.id==="att"){const b=$("#chrev");if(b)b.disabled=!t.value.trim();UI.ch&&(UI.ch.att=t.value)}
+else if(t.id==="esq"){UI.eq=t.value;$("#elist").innerHTML=elist()}});
+document.addEventListener("change",e=>{const t=e.target;
+if(t.id==="imp"){importFile(t.files[0]);t.value=""}
+else if(t.id==="fdisc"){UI.fd=t.value;$("#clist").innerHTML=clist()}
+else if(t.id==="efc"){UI.ec=t.value;$("#elist").innerHTML=elist()}
+else if(t.id==="efd"){UI.edi=t.value;$("#elist").innerHTML=elist()}
+else if(t.id==="chd"){UI.chd=t.value}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const a=b.dataset.act,id=b.dataset.id,v=b.dataset.v;
+switch(a){
+case"start":S.welcomed=true;save();location.hash="#cards";break;
+case"theme":S.theme=S.theme==="dark"?"light":"dark";save();render();break;
+case"print":window.print();break;
+case"savecard":{const q=val("fq"),an=val("fa"),d=val("fd"),s=val("fs");if(q.length<3)return need("fe","Escreva a pergunta (mínimo 3 caracteres).","fq");if(!an)return need("fe","Escreva a resposta.","fa");if(!d)return need("fe","Informe a disciplina.","fd");
+if(UI.ed){const c=S.cards.find(x=>x.id===UI.ed);if(c){c.q=q;c.a=an;c.disc=d;c.ass=s}log("Cartão editado: "+q.slice(0,50));UI.ed=null;toast("Cartão atualizado")}else{S.cards.unshift({id:uid(),q,a:an,disc:d,ass:s,lvl:"",created:Date.now()});log("Cartão criado: "+q.slice(0,50));toast("Cartão adicionado")}save();rr();break}
+case"editcard":UI.ed=id;rr();window.scrollTo(0,0);break;
+case"canccard":UI.ed=null;rr();break;
+case"delcard":if(confirm("Excluir este cartão?")){S.cards=S.cards.filter(c=>c.id!==id);UI.rev.delete(id);if(UI.ed===id)UI.ed=null;log("Cartão excluído");save();rr()}break;
+case"flip":UI.rev.has(id)?UI.rev.delete(id):UI.rev.add(id);$("#clist").innerHTML=clist();break;
+case"lvl":{const c=S.cards.find(x=>x.id===id);if(c){c.lvl=c.lvl===v?"":v;save();b.dataset.st?rr():$("#clist").innerHTML=clist()}break}
+case"study":{const l=S.cards.filter(c=>!UI.fd||c.disc===UI.fd).map(c=>c.id);if(!l.length)return toast("Sem cartões nesta disciplina");UI.study={ids:l,i:0,show:false};rr();break}
+case"sshow":UI.study.show=true;rr();break;
+case"snext":if(UI.study.i>=UI.study.ids.length-1){log("Estudo em sequência concluído ("+UI.study.ids.length+" cartões)");save();UI.study=null;toast("Sequência concluída")}else{UI.study.i++;UI.study.show=false}rr();break;
+case"sprev":UI.study.i=Math.max(0,UI.study.i-1);UI.study.show=false;rr();break;
+case"endstudy":UI.study=null;rr();break;
+case"addrev":{const t=val("rt"),d=val("rd"),dt=val("rdt");if(t.length<3)return need("re","Descreva o conteúdo estudado.","rt");if(!d)return need("re","Informe a disciplina.","rd");if(!validD(dt))return need("re","Informe uma data válida.","rdt");S.rev.unshift({id:uid(),t,disc:d,d:dt,done:[]});log("Estudo registrado: "+t.slice(0,50));save();toast("Revisões calculadas");UI.rf="pend";rr();break}
+case"revdone":{const r=S.rev.find(x=>x.id===id),s=r&&rstat(r);if(r&&s.k>=0){r.done=r.done||[];r.done[s.k]=today();log("Revisão de "+["24h","7 dias","30 dias"][s.k]+" feita: "+r.t.slice(0,40));save();toast("Revisão registrada");$("#rlist").innerHTML=rlist()}break}
+case"delrev":if(confirm("Excluir este registro de estudo?")){S.rev=S.rev.filter(r=>r.id!==id);log("Registro de estudo excluído");save();rr()}break;
+case"rf":UI.rf=v;rr();break;
+case"saveint":{const n=[0,1,2].map(i=>Number(val("i"+i)));if(!n.every(x=>Number.isInteger(x)&&x>=1&&x<=365))return need("ie","Use números inteiros de 1 a 365.","i0");if(!(n[0]<n[1]&&n[1]<n[2]))return need("ie","Os intervalos devem crescer (1ª < 2ª < 3ª).","i0");S.cfg.int=n;save();toast("Intervalos salvos");rr();break}
+case"defint":S.cfg.int=[1,7,30];save();rr();break;
+case"saveerr":{const q=val("eq"),d=val("ed"),c=val("ec"),an=val("ea"),dt=val("edt");if(q.length<3)return need("ee","Descreva a questão ou o conteúdo.","eq");if(!d)return need("ee","Informe a disciplina.","ed");if(!CATS.includes(c))return need("ee","Escolha a categoria do erro.","ec");if(!an)return need("ee","Escreva a resposta correta.","ea");if(!validD(dt))return need("ee","Informe uma data válida.","edt");
+const o={q,disc:d,ass:val("es"),cat:c,mot:val("em"),ans:an,learn:val("el"),date:dt};if(UI.ee){const x=S.err.find(r=>r.id===UI.ee);if(x)Object.assign(x,o);UI.ee=null;log("Erro editado");toast("Registro atualizado")}else{S.err.unshift(Object.assign({id:uid()},o));log("Erro registrado: "+d+" · "+c);toast("Erro registrado")}save();rr();break}
+case"editerr":UI.ee=id;rr();window.scrollTo(0,0);break;
+case"cancerr":UI.ee=null;rr();break;
+case"delerr":if(confirm("Excluir este registro de erro?")){S.err=S.err.filter(x=>x.id!==id);log("Erro excluído");save();rr()}break;
+case"chstart":{const d=UI.chd;const l=shuffle(S.cards.filter(c=>!d||c.disc===d).map(c=>c.id));if(!l.length)return need("che","Sem cartões nesta disciplina.");UI.ch={ids:l,i:0,show:false,att:"",hits:0,miss:[],done:false,disc:d,sent:false};rr();break}
+case"chrev":{const c=UI.ch;if(!b.dataset.nk&&!(c.att||"").trim())return;c.show=true;rr();break}
+case"chans":{const c=UI.ch;if(v==="1")c.hits++;else c.miss.push(c.ids[c.i]);c.i++;c.show=false;c.att="";if(c.i>=c.ids.length){c.done=true;S.ses.unshift({id:uid(),ts:Date.now(),disc:c.disc,total:c.ids.length,hits:c.hits});S.ses=S.ses.slice(0,100);log("Desafio concluído: "+c.hits+"/"+c.ids.length+(c.disc?" · "+c.disc:""));save()}rr();break}
+case"misserr":{const c=UI.ch;c.miss.forEach(id=>{const k=S.cards.find(x=>x.id===id);if(k)S.err.unshift({id:uid(),q:k.q,disc:k.disc,ass:k.ass||"",cat:"Falha de memorização",mot:"Errei no Modo Desafio",ans:k.a,learn:"",date:today()})});c.sent=true;log("Erros do desafio enviados ao caderno ("+c.miss.length+")");save();toast("Enviados ao Caderno de Erros");rr();break}
+case"chend":UI.ch=null;rr();break;
+case"export":{const blob=new Blob([JSON.stringify({__app:"aprovaia-recall",v:1,data:S})],{type:"application/json"}),u=URL.createObjectURL(blob),l=document.createElement("a");l.href=u;l.download="aprovaia-recall-backup-"+today()+".json";document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);toast("Backup exportado");break}
+case"wipe":if(confirm("Apagar TODOS os dados deste aparelho? Isso não pode ser desfeito.")){S=norm(null);try{localStorage.removeItem(KEY)}catch(_){}UI.ed=UI.ee=UI.ch=UI.study=null;render();toast("Dados apagados")}break}});
+render();
+</script>
+</body>
+</html>
